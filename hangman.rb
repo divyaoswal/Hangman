@@ -2,6 +2,14 @@ require 'sinatra'
 require 'sinatra/reloader'
 
 
+def initialize_defaults(difficulty)
+  @@secret_word = random_word(difficulty).chars
+  # @@secret_word = (0...@@difficulty).map{ random_char() }
+  @@guess_count = 5
+  @@word = Array.new(difficulty, "-")
+  @@misses = []
+end
+
 
 def word_map
   map = {}
@@ -17,27 +25,17 @@ def word_map
   map
 end
 
-def random_word
+def random_word(difficulty)
   map = word_map()
-  words = map[@@difficulty]
+  words = map[difficulty]
   words[rand(words.length)]
 end
 
-@@difficulty = 5
 
-def initialize_defaults()
-
-  @@secret_word = random_word().chars
-  # @@secret_word = (0...@@difficulty).map{ random_char() }
-  @@guess_count = 5
-  @@word = Array.new(@@difficulty, "-")
-  @@misses = []
-end
-
-initialize_defaults()
-
-get '/' do
+get '/play' do
   guess = params['guess']
+  # @@guess_count = params[:levels]
+  # throw params.inspect
   if(guess != nil && guess != "")
     indexes = get_guess_indexes(guess)
     update_guess_count(indexes)
@@ -45,7 +43,7 @@ get '/' do
     update_misses(indexes, guess)
   end
 
-  erb :index, :locals => {
+  erb :play, :locals => {
     :secret_word => @@secret_word,
     :word => @@word,
     :guess_count => @@guess_count,
@@ -53,8 +51,18 @@ get '/' do
   }
 end
 
+get '/' do
+
+  erb :home
+end
+
+get '/start' do
+  difficulty = params['levels'].to_i
+  initialize_defaults(difficulty)
+  redirect to('/play')
+end
+
 get '/restart' do
-  initialize_defaults()
   redirect to('/')
 end
 

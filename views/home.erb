@@ -1,0 +1,13 @@
+<html>
+  <body>
+    <form action="start">
+      <select name="levels">
+        <% (1..30).each do |el| %>
+          <option > <%= el %> </option>
+        <% end %>
+      </select>
+      <input type='submit' value='play' />
+    </form>
+  </body>
+</html>
+

@@ -34,16 +34,21 @@ end
 
 get '/play' do
   guess = params['guess']
-  # @@guess_count = params[:levels]
+  cheat = params['cheat']
+  if(cheat == 'true')
+    secret = @@secret_word
+  end
+
   # throw params.inspect
   if(guess != nil && guess != "")
     indexes = get_guess_indexes(guess)
     update_guess_count(indexes)
     update_word(indexes, guess)
-    update_misses(indexes, guess)
+    update_used(indexes, guess)
   end
 
   erb :play, :locals => {
+    :secret => secret,
     :secret_word => @@secret_word,
     :word => @@word,
     :guess_count => @@guess_count,
@@ -52,7 +57,6 @@ get '/play' do
 end
 
 get '/' do
-
   erb :home
 end
 
@@ -93,6 +97,8 @@ def update_word(indexes, guess)
     @@word[i] = guess
   end
 end
+
+
 
 
 

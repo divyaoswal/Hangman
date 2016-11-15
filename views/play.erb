@@ -1,7 +1,9 @@
 <html>
   <body>
     <p>
-      <%= secret_word.join %>
+      <% if(secret != nil) %>
+      <%= secret.join %>
+      <% end %>
     </p>
 
     <p>
@@ -23,10 +25,10 @@
             <input type='submit' value='Guess!' />
           </form>
           <p>
-            <%= word.join(" ") %>
+            Rescue_Word:<%= word.join(" ") %>
           </p>
           <p>
-            Misses: <%= misses.join(",") %>
+            Used: <%= misses.join(",") %>
           </p>
           <p>
             you have <b><%= guess_count %></b> guesses remaining

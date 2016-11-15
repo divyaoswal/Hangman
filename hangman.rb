@@ -1,14 +1,34 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-def random_char
-  (97 + (rand(26))).chr
+
+
+def word_map
+  map = {}
+  file = File.open("dictionary.txt", 'r')
+  file.readlines.each do |line|
+    word = line.strip
+    if(map.has_key?(word.length))
+      map[word.length] << word
+    else
+      map[word.length] = [word]
+    end
+  end
+  map
+end
+
+def random_word
+  map = word_map()
+  words = map[@@difficulty]
+  words[rand(words.length)]
 end
 
 @@difficulty = 5
 
 def initialize_defaults()
-  @@secret_word = (0...@@difficulty).map{ random_char() }
+
+  @@secret_word = random_word().chars
+  # @@secret_word = (0...@@difficulty).map{ random_char() }
   @@guess_count = 5
   @@word = Array.new(@@difficulty, "-")
   @@misses = []
@@ -18,7 +38,7 @@ initialize_defaults()
 
 get '/' do
   guess = params['guess']
-  if(guess != nil)
+  if(guess != nil && guess != "")
     indexes = get_guess_indexes(guess)
     update_guess_count(indexes)
     update_word(indexes, guess)

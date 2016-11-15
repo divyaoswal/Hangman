@@ -1,0 +1,42 @@
+<html>
+  <body>
+    <p>
+      <%= secret_word.join %>
+    </p>
+
+    <p>
+      <% if(secret_word == word) %>
+          You Won!!
+          <form action="restart">
+            <input type='submit' value='reset' />
+          </form>
+
+       <% elsif (@@guess_count == 0) %>
+          You Lose, Target word is <%= secret_word.join %>
+          <form action="restart">
+            <input type='submit' value='reset' />
+          </form>
+
+        <% else %>
+          <form>
+            <input type='text' name='guess' />
+            <input type='submit' value='Guess!' />
+          </form>
+          <p>
+            <%= word.join(" ") %>
+          </p>
+          <p>
+            Misses: <%= misses.join(",") %>
+          </p>
+          <p>
+            you have <b><%= guess_count %></b> guesses remaining
+          </p>
+       <% end %>
+     </p>
+
+  </body>
+</html>
+
+
+
+

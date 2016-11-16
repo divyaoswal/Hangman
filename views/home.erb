@@ -1,13 +1,18 @@
 <html>
   <body>
+    <img src="http://i.imgur.com/UDpfi.gif">
+
+    <p></p>
     <form action="start">
-      <select name="levels">
-        <% (1..30).each do |el| %>
+      Levels of difficulty
+      <select style="font-size:100px" name="levels">
+        <% (1..20).each do |el| %>
           <option > <%= el %> </option>
         <% end %>
       </select>
-      <input type='submit' value='play' />
+      <input style="font-size:500px" type='submit' value='play' />
     </form>
+
   </body>
 </html>
 

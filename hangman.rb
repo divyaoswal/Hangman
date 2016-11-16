@@ -4,17 +4,19 @@ require 'sinatra/reloader'
 
 def initialize_defaults(difficulty)
   @@secret_word = random_word(difficulty).chars
-  # @@secret_word = (0...@@difficulty).map{ random_char() }
   @@guess_count = 5
   @@word = Array.new(difficulty, "-")
-  @@misses = []
+  @@used = []
 end
 
-
+#using map to keep the words according to their counts, which helps to
+#to determine the level of difficulty
 def word_map
   map = {}
+  #'r' is read
   file = File.open("dictionary.txt", 'r')
   file.readlines.each do |line|
+    #strip is used to remove carraige return \n
     word = line.strip
     if(map.has_key?(word.length))
       map[word.length] << word
@@ -25,6 +27,7 @@ def word_map
   map
 end
 
+#generating random words according to difficulty
 def random_word(difficulty)
   map = word_map()
   words = map[difficulty]
@@ -35,9 +38,6 @@ end
 get '/play' do
   guess = params['guess']
   cheat = params['cheat']
-  if(cheat == 'true')
-    secret = @@secret_word
-  end
 
   # throw params.inspect
   if(guess != nil && guess != "")
@@ -48,11 +48,11 @@ get '/play' do
   end
 
   erb :play, :locals => {
-    :secret => secret,
+    :cheat => cheat,
     :secret_word => @@secret_word,
     :word => @@word,
     :guess_count => @@guess_count,
-    :misses => @@misses
+    :used => @@used
   }
 end
 
@@ -66,10 +66,9 @@ get '/start' do
   redirect to('/play')
 end
 
-get '/restart' do
-  redirect to('/')
-end
 
+#get indexes of guess in secret_word and update the respective indexes
+#with the guess in update_word method
 def get_guess_indexes(guess)
   idx = []
   @@secret_word.each_with_index do |c, i|
@@ -80,23 +79,28 @@ def get_guess_indexes(guess)
   idx
 end
 
+def update_word(indexes, guess)
+  indexes.each do |i|
+    @@word[i] = guess
+  end
+end
+
+
+#decrease the guess_count if indexes are zero indicates guess is incorrect
 def update_guess_count(indexes)
   if(indexes.length == 0)
     @@guess_count -= 1
   end
 end
 
-def update_misses(indexes, guess)
+#as you find the guess incorrect update used words
+def update_used(indexes, guess)
   if(indexes.length == 0)
-    @@misses << guess
+    @@used << guess
   end
 end
 
-def update_word(indexes, guess)
-  indexes.each do |i|
-    @@word[i] = guess
-  end
-end
+
 
 
 

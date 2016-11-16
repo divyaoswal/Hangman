@@ -1,34 +1,71 @@
 <html>
   <body>
     <p>
-      <% if(secret != nil) %>
-      <%= secret.join %>
+      <% if(cheat == 'true') %>
+        <%= secret_word.join %>
       <% end %>
     </p>
 
     <p>
       <% if(secret_word == word) %>
-          You Won!!
-          <form action="restart">
-            <input type='submit' value='reset' />
+          <p><font color = "blue"> You Won!! </font></p>
+          <form action="/">
+            <input style="font-size:100px" type='submit' value='reset' />
           </form>
+          <img src = "http://www.arcamax.com/hangman/win.gif">
 
        <% elsif (@@guess_count <= 0) %>
-          You Lose, Target word is <%= secret_word.join %>
-          <form action="restart">
-            <input type='submit' value='reset' />
+          <p><font color="red">You Lose, Target word is</font> <font color="blue"> <%= secret_word.join %></font></p>
+          <form action="/">
+            <input style="font-size:100px"type='submit' value='reset' />
           </form>
+          <img src="http://www.arcamax.com/hangman/lose.gif">
 
         <% else %>
+          <!-- Table to show keyboard -->
           <form>
-            <input type='text' name='guess' />
-            <input type='submit' value='Guess!' />
+            <table>
+              <tr>
+                <td><button name='guess' type="submit" value="q">q</button>
+                </td>
+                <td><button name="guess" type="submit" value="w">w</button></td>
+                <td><button name="guess" type="submit" value="e">e</button></td>
+                <td><button name="guess" type="submit" value="r">r<button></td>
+                <td><button name="guess" type="submit" value="t">t</button></td>
+                <td><button name="guess" type="submit" value="y">y</button></td>
+                <td><button name="guess" type="submit" value="u">u</button></td>
+                <td><button name="guess" type="submit" value="i">i</button></td>
+                <td><button name="guess" type="submit" value="o">o</button></td>
+                <td><button name="guess" type="submit" value="p">p</button></td>
+              </tr>
+              <tr>
+                <td><button name="guess" type="submit" value="a">a</button></td>
+                <td><button name="guess" type="submit" value="s">s</button></td>
+                <td><button name="guess" type="submit" value="d">d</button></td>
+                <td><button name="guess" type="submit" value="f">f</button></td>
+                <td><button name="guess" type="submit" value="g">g</button></td>
+                <td><button name="guess" type="submit" value="h">h</button></td>
+                <td><button name="guess" type="submit" value="j">j</button></td>
+                <td><button name="guess" type="submit" value="k">k</button></td>
+                <td><button name="guess" type="submit" value="l">l</button></td>
+              </tr>
+              <tr>
+                <td><button name="guess" type="submit" value="z">z</button></td>
+                <td><button name="guess" type="submit" value="x">x</button></td>
+                <td><button name="guess" type="submit" value="c">c</button></td>
+                <td><button name="guess" type="submit" value="v">v</button></td>
+                <td><button name="guess" type="submit" value="b">b</button></td>
+                <td><button name="guess" type="submit" value="n">n</button></td>
+                <td><button name="guess" type="submit" value="m">m</button></td>
+              </tr>
+            </table>
           </form>
+
           <p>
-            Rescue_Word:<%= word.join(" ") %>
+            Rescue Word:  <font color="blue"><%= word.join(" ") %></font>
           </p>
           <p>
-            Used: <%= misses.join(",") %>
+            Used:  <font color="red"> <%= used.join(",") %></font>
           </p>
           <p>
             you have <b><%= guess_count %></b> guesses remaining

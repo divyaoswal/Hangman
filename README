@@ -1,0 +1,10 @@
+Hangman Game using Ruby Sinatra Framework.
+
+The app is running at https://whispering-waters-74399.herokuapp.com/
+Check it out and don't get hanged!
+
+Development
+-----------
+1. bundle install
+2. ruby hangman.rb
+3. http://localhost:<PORT>
